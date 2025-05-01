@@ -1,0 +1,40 @@
+# Configuration file for GCalSync
+
+[general]
+disable_reminders = true
+block_event_visibility = "private"
+authorized_ports = [8080, 8081, 8090]
+verbosity = 1
+
+[google]
+client_id = "your-google-client-id.apps.googleusercontent.com"
+client_secret = "your-google-client-secret"
+
+# CalDAV server configurations
+[caldav_servers.example]
+server_url = "https://caldav.example.com/dav"
+username = "your-username"
+password = "your-password"
+name = "Example CalDAV"
+
+# Microsoft Exchange server configurations using Basic Auth (not recommended)
+[microsoft_servers.basic_auth_example]
+server_url = "https://outlook.office365.com/Microsoft-Server-ActiveSync"
+username = "your-microsoft-username"
+password = "your-microsoft-password"
+name = "Microsoft Exchange Basic Auth"
+use_oauth = false
+
+# Microsoft Exchange server configurations using OAuth (recommended for OKTA SSO)
+[microsoft_servers.okta_sso_example]
+server_url = "https://graph.microsoft.com/v1.0"
+name = "Microsoft Exchange OAuth"
+use_oauth = true
+# Get these values from your Azure App registration
+client_id = "your-azure-app-client-id"
+client_secret = "your-azure-app-client-secret"
+tenant_id = "your-tenant-id"
+# Usually in format like https://login.microsoftonline.com/{tenant_id}
+authority_url = "https://login.microsoftonline.com/your-tenant-id"
+# This is configured in your Azure App registration
+redirect_url = "http://localhost:8080"

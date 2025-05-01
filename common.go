@@ -41,10 +41,24 @@ type GeneralConfig struct {
 	Verbosity        int    `toml:"verbosity"`
 }
 
+type MicrosoftConfig struct {
+	ServerURL      string `toml:"server_url"`
+	Username       string `toml:"username"`
+	Password       string `toml:"password"`
+	Name           string `toml:"name"`
+	ClientID       string `toml:"client_id"`
+	ClientSecret   string `toml:"client_secret"`
+	TenantID       string `toml:"tenant_id"`
+	UseOAuth       bool   `toml:"use_oauth"`
+	RedirectURL    string `toml:"redirect_url"`
+	AuthorityURL   string `toml:"authority_url"`
+}
+
 type Config struct {
-	General     GeneralConfig           `toml:"general"`
-	Google      GoogleConfig            `toml:"google"`
-	CalDAVs     map[string]CalDAVConfig `toml:"caldav_servers"` // CalDAV servers
+	General     GeneralConfig               `toml:"general"`
+	Google      GoogleConfig                `toml:"google"`
+	CalDAVs     map[string]CalDAVConfig     `toml:"caldav_servers"` // CalDAV servers
+	Microsofts  map[string]MicrosoftConfig  `toml:"microsoft_servers"` // Microsoft servers
 }
 
 var oauthConfig *oauth2.Config

@@ -1,0 +1,22 @@
+# Microsoft Exchange ActiveSync configuration using basic authentication (username/password)
+# This method is simpler but less secure and doesn't support OKTA SSO
+
+[general]
+disable_reminders = true
+block_event_visibility = "private"
+authorized_ports = [8080, 8081, 8090]
+verbosity = 1
+
+[google]
+client_id = "your-google-client-id.apps.googleusercontent.com"
+client_secret = "your-google-client-secret"
+
+[microsoft_servers.exchange]
+server_url = "https://outlook.office365.com/Microsoft-Server-ActiveSync"
+username = "your-microsoft-username@company.com"
+password = "your-microsoft-password"
+name = "Microsoft Exchange"
+use_oauth = false  # Set to false for basic authentication
+
+# Usage:
+# gcalsync add "Work Calendar" microsoft exchange your-email@company.com
