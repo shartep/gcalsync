@@ -3,8 +3,11 @@ module github.com/bobuk/gcalsync
 go 1.22.1
 
 require (
+	github.com/AzureAD/microsoft-authentication-library-for-go v1.2.2
 	github.com/BurntSushi/toml v1.4.0
+	github.com/emersion/go-webdav v0.6.0
 	github.com/mattn/go-sqlite3 v1.14.22
+	github.com/microsoftgraph/msgraph-sdk-go v1.39.0
 	golang.org/x/oauth2 v0.20.0
 	google.golang.org/api v0.182.0
 )
@@ -15,7 +18,6 @@ require (
 	cloud.google.com/go/compute v1.27.0 // indirect
 	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	github.com/emersion/go-ical v0.0.0-20240127095438-fc1c9d8fb2b6 // indirect
-	github.com/emersion/go-webdav v0.6.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect

@@ -74,6 +74,38 @@ func (cf *CalendarFactory) GetAllCalendars() (map[string]map[string]CalendarProv
 
 				// Update the calendar info to use the correct provider key
 				calendarInfos[i].ProviderKey = providerKey
+				
+			case "microsoft":
+				// Get the server configuration based on provider_config
+				var serverConfig MicrosoftConfig
+				serverName := calInfo.ProviderConfig
+
+				// If there's no server name stored, we need to ask the user to reconfigure this calendar
+				if serverName == "" || serverName == "default" {
+					return nil, nil, fmt.Errorf("calendar requires Microsoft server configuration; please provide a server name")
+				}
+
+				// Use the server from the Microsoft servers config
+				if server, ok := cf.config.Microsofts[serverName]; ok {
+					serverConfig = server
+				} else {
+					return nil, nil, fmt.Errorf("Microsoft server '%s' not found in configuration", serverName)
+				}
+
+				// Create a provider key that includes the server name to allow multiple servers
+				providerKey := "microsoft-" + serverName
+
+				// Only create the provider if we don't already have one for this server
+				if _, exists := providers[accountName][providerKey]; !exists {
+					microsoftProvider, err := NewMicrosoftCalendarProvider(cf.ctx, serverConfig, cf.db, accountName)
+					if err != nil {
+						return nil, nil, fmt.Errorf("error connecting to Microsoft server %s: %w", serverName, err)
+					}
+					providers[accountName][providerKey] = microsoftProvider
+				}
+
+				// Update the calendar info to use the correct provider key
+				calendarInfos[i].ProviderKey = providerKey
 
 			default:
 				return nil, nil, fmt.Errorf("unsupported provider type: %s", calInfo.ProviderType)
@@ -106,6 +138,22 @@ func (cf *CalendarFactory) CreateCalendarProvider(providerType string, accountNa
 		}
 
 		return NewCalDAVProvider(cf.ctx, serverConfig.ServerURL, serverConfig.Username, serverConfig.Password)
+		
+	case "microsoft":
+		// Get the server configuration
+		if serverName == "" || serverName == "default" {
+			return nil, fmt.Errorf("no server name provided for Microsoft provider")
+		}
+
+		// Use the server from the Microsoft servers config
+		var serverConfig MicrosoftConfig
+		if server, ok := cf.config.Microsofts[serverName]; ok {
+			serverConfig = server
+		} else {
+			return nil, fmt.Errorf("Microsoft server '%s' not found in configuration", serverName)
+		}
+
+		return NewMicrosoftCalendarProvider(cf.ctx, serverConfig, cf.db, accountName)
 
 	default:
 		return nil, fmt.Errorf("unsupported provider type: %s", providerType)
